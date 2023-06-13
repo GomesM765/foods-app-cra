@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Form, Container, Row } from 'react-bootstrap';
+import ClienteForm from './ClienteForm';
 
 //import foods from '../models/foods';
 import Food from './Food';
@@ -10,10 +11,20 @@ const Main = () => {
 
   let [nome, setNome] = useState('');
 
-  const [show, setShow] = useState(false);
+//botao de preparação
+  const [showFoodModal, setShowFoodModal] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+ 
+  const handleCloseFoodModal = () => setShowFoodModal(false);
+  const handleShowFoodModal = () => setShowFoodModal(true);
+
+//botao de cliente
+  const [showClienteModal, setShowClienteModal] = useState(false);
+
+  
+   const handleCloseClienteModal = () => setShowClienteModal(false);
+   const handleShowClienteModal = () => setShowClienteModal(true);
+
 
   let buttonAdd = useRef(null);
 
@@ -50,18 +61,31 @@ const Main = () => {
 
   return (
     <main>
+    
       <Container>
         <h1>Menu</h1>
         <div className="text-right">
           <Button
             variant="secondary"
             className="mr-4 font-weight-bold"
-            onClick={handleShow}
+            onClick={handleShowFoodModal}
             ref={buttonAdd}
           >
             + | Adicionar Preparação
           </Button>
+        
+
+      
+          <Button
+            variant="secondary"
+            className="mr-4 font-weight-bold"
+            onClick={handleShowClienteModal}
+            ref={buttonAdd}
+          >
+            + | Adicionar Cliente
+          </Button>
         </div>
+
 
         {/* Component Button do bootstrap. */}
         <Form.Group className="mb-3">
@@ -85,11 +109,17 @@ const Main = () => {
         </Row>
 
         <FoodForm
-          show={show}
-          handleClose={handleClose}
+          show={showFoodModal}
+          handleClose={handleCloseFoodModal}
           foods={foods}
           setFoods={setFoods}
         ></FoodForm>
+        <ClienteForm>
+          show={showClienteModal}
+          handleClose={handleCloseClienteModal}
+          foods={foods}
+          setFoods={setFoods}
+        </ClienteForm>
       </Container>
     </main>
   );
