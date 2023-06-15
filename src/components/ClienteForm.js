@@ -1,43 +1,48 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 
-const ClienteForm = ({ show, handleCloseClienteModal, foods, setFoods }) => {
-  // var {} = props;
+const ClienteForm = ({ show, handleClose, clientes, setClientes }) => {
 
-  let [ClienteForm, setClienteForm] = useState({ name: '', image: '' });
+  let [cliente, setClienteForm] = useState({
+    name: '',
+    email: '',
+    nascimento: '',
+    cep: '',
+  });
 
   const handleChange = (event) => {
-    setFood({ ...food, [event.target.name]: event.target.value });
+    setClienteForm({ ...cliente, [event.target.name]: event.target.value });
   };
 
   const handleOnSubmit = (event) => {
     event.preventDefault();
     // Enviar os dados para o servidor backend.
-    fetch('http://localhost:4000/foods', {
+    fetch('http://localhost:4000/clientes', {
       method: 'POST', // Método de envio.
-      body: JSON.stringify(ClienteForm), // Converte o Json em string
+      body: JSON.stringify(cliente), // Converte o Json em string
       headers: {
         'Content-Type': 'application/json', // Especifica o tipo do conteúdo da requisição.
       },
     })
       .then((response) => {
-        if (response.ok == true) {
+        if (response.ok === true) {
           // Fechar modal.
-          handleCloseClienteModal();
+          handleClose();
           return response.json();
         }
       })
       .then((data) => {
-        setFoods([...foods, data]);
+        setClientes([...clientes, data]);
       })
       .catch((error) => {});
     // Atualizar a lista dos itens do cardápio.
   };
 
+
   return (
-    <Modal show={show} onHide={handleCloseClienteModal}>
+    <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Cadastro de Comida</Modal.Title>
+        <Modal.Title>Cadastro de Cliente</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handleOnSubmit}>
         <Modal.Body>
@@ -48,35 +53,42 @@ const ClienteForm = ({ show, handleCloseClienteModal, foods, setFoods }) => {
               placeholder="Nome"
               name="name"
               onChange={handleChange}
-              value={food.name}
+              required
             />
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Imagem</Form.Label>
+            <Form.Label>Email</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Imagem"
-              name="image"
+              type="email"
+              placeholder="Email"
+              name="email"
               onChange={handleChange}
-              value={food.image}
+              required
             />
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Descrição</Form.Label>
+            <Form.Label>Data de Nascimento</Form.Label>
             <Form.Control
-              as="textarea"
-              type="text"
-              placeholder="Descrição"
-              name="description"
+              type="date"
+              placeholder="Data de Nascimento"
+              name="nascimento"
               onChange={handleChange}
-              value={food.description}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>CEP</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="CEP"
+              name="cep"
+              onChange={handleChange}
+              required
             />
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseClienteModal}>
+          <Button variant="secondary" onClick={handleClose}>
             Fechar
           </Button>
           <Button type="submit" variant="primary">

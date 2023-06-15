@@ -1,29 +1,31 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Form, Container, Row } from 'react-bootstrap';
-import ClienteForm from './ClienteForm';
+import { Button, Form, Container, Row, Card } from 'react-bootstrap';
 
 //import foods from '../models/foods';
 import Food from './Food';
 import FoodForm from './FoodForm';
 
+import Cliente from './Cliente';
+import ClienteForm from './ClienteForm';
+
 const Main = () => {
   let [foods, setFoods] = useState([]);
+  let [clientes, setClientes] = useState([]);
+
 
   let [nome, setNome] = useState('');
 
-//botao de preparação
+  //botao de preparação
   const [showFoodModal, setShowFoodModal] = useState(false);
 
- 
   const handleCloseFoodModal = () => setShowFoodModal(false);
   const handleShowFoodModal = () => setShowFoodModal(true);
 
-//botao de cliente
+  //botao de cliente
   const [showClienteModal, setShowClienteModal] = useState(false);
 
-  
-   const handleCloseClienteModal = () => setShowClienteModal(false);
-   const handleShowClienteModal = () => setShowClienteModal(true);
+  const handleCloseClienteModal = () => setShowClienteModal(false);
+  const handleShowClienteModal = () => setShowClienteModal(true);
 
 
   let buttonAdd = useRef(null);
@@ -55,13 +57,25 @@ const Main = () => {
       .catch();
   }, []);
 
+  useEffect(() => {
+    fetch('http://localhost:4000/clientes')
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setClientes([...data]);
+      })
+      .catch();
+  }, []);
+
   const nomeHandleChange = (event) => {
     setNome(event.target.value);
   };
 
+
   return (
     <main>
-    
+
       <Container>
         <h1>Menu</h1>
         <div className="text-right">
@@ -70,12 +84,13 @@ const Main = () => {
             className="mr-4 font-weight-bold"
             onClick={handleShowFoodModal}
             ref={buttonAdd}
+            style={{ marginRight: 10 }}
           >
             + | Adicionar Preparação
           </Button>
-        
 
-      
+
+
           <Button
             variant="secondary"
             className="mr-4 font-weight-bold"
@@ -102,6 +117,12 @@ const Main = () => {
           Pesquisar
         </Button>
 
+        <Card style={{marginTop: 30}}>
+          <Card.Header className="text-center font-weight-bold bg-primary" style={{ color: 'white' }}>
+            Área do cardápio
+          </Card.Header>
+        </Card>
+
         <Row className="my-2">
           {foods.map((food) => (
             <Food key={food.id} food={food}></Food>
@@ -113,12 +134,27 @@ const Main = () => {
           handleClose={handleCloseFoodModal}
           foods={foods}
           setFoods={setFoods}
-        ></FoodForm>
-        <ClienteForm>
+        >
+        </FoodForm>
+
+        <Card>
+          <Card.Header className="text-center font-weight-bold bg-primary" style={{ color: 'white' }}>
+            Área de Clientes
+          </Card.Header>
+        </Card>
+
+        <Row className="my-2">
+          {clientes.map((cliente) => (
+            <Cliente key={cliente.id} cliente={cliente}></Cliente>
+          ))}
+        </Row>
+
+        <ClienteForm
           show={showClienteModal}
           handleClose={handleCloseClienteModal}
-          foods={foods}
-          setFoods={setFoods}
+          clientes={clientes}
+          setClientes={setClientes}
+        >
         </ClienteForm>
       </Container>
     </main>

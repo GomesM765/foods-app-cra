@@ -21,7 +21,7 @@ const FoodForm = ({ show, handleClose, foods, setFoods }) => {
       },
     })
       .then((response) => {
-        if (response.ok == true) {
+        if (response.ok === true) {
           // Fechar modal.
           handleClose();
           return response.json();
