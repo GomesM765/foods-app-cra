@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-import { Button, Form, Modal } from 'react-bootstrap';
+import React, { useState } from 'react'; //usado para importação 
+// do pacote 'react' para permitir a criação de componentes React.
 
+//useEffect, useRef e useState são importados do pacote 'react' para //usar Hooks React.//
+import { Button, Form, Modal } from 'react-bootstrap';
+ // importação dos botoes, do fomrulario e do modal usado no formuladio do cliente que saoimportados do bootstrap react
 const ClienteForm = ({ show, handleClose, clientes, setClientes }) => {
 
   let [cliente, setClienteForm] = useState({
@@ -17,10 +20,10 @@ const ClienteForm = ({ show, handleClose, clientes, setClientes }) => {
   const handleOnSubmit = (event) => {
     event.preventDefault();
     // Enviar os dados para o servidor backend.
-    fetch('http://localhost:4000/clientes', {
+    fetch('http://localhost:4000/clientes', { // é uma função assíncrona que faz uma requisição GET para getclientes e retorna em formato de Json
       method: 'POST', // Método de envio.
       body: JSON.stringify(cliente), // Converte o Json em string
-      headers: {
+      headers: { 
         'Content-Type': 'application/json', // Especifica o tipo do conteúdo da requisição.
       },
     })
@@ -30,10 +33,10 @@ const ClienteForm = ({ show, handleClose, clientes, setClientes }) => {
           handleClose();
           return response.json();
         }
-      })
+      }) 
       .then((data) => {
         setClientes([...clientes, data]);
-      })
+      }) // catch usado para indentificação de erro
       .catch((error) => {});
     // Atualizar a lista dos itens do cardápio.
   };
@@ -63,7 +66,7 @@ const ClienteForm = ({ show, handleClose, clientes, setClientes }) => {
               placeholder="Email"
               name="email"
               onChange={handleChange}
-              required
+              required //O atributo booleano required , se presente, indica que o usuário deve especificar um valor para a entrada antes que o formulário proprietário possa ser enviado.
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">

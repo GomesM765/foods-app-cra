@@ -33,7 +33,7 @@ const Main = () => {
   async function getComidas() {
     const response = await fetch('http://localhost:4000/comidas', {
       method: 'GET',
-    });
+    }); //A função assíncrona getComidas é definida para fazer uma requisição GET para o servidor em http://localhost:4000/comidas e retornar os dados recebidos.
     const data = await response.json();
 
     return data;
@@ -45,7 +45,7 @@ const Main = () => {
     console.log(data);
     console.log('Depois do fetch!');
   };
-
+// listagem de foods
   useEffect(() => {
     fetch('http://localhost:4000/foods')
       .then((response) => {
@@ -56,15 +56,15 @@ const Main = () => {
       })
       .catch();
   }, []);
-
+// listagem de clientes 
   useEffect(() => {
     fetch('http://localhost:4000/clientes')
       .then((response) => {
         return response.json();
-      })
+      }) //usado para indewntificação de erro
       .then((data) => {
         setClientes([...data]);
-      })
+      }) // o erro cai no catch
       .catch();
   }, []);
 
@@ -88,13 +88,14 @@ const Main = () => {
           >
             + | Adicionar Preparação
           </Button>
+          {/** Há dois botões na parte superior direita, da tela principal um para adicionar preparação e outro para adicionar cliente. Quando esses botões são clicados, os modais correspondentes são abertos. */}
 
-
-
+                 
+ {/**o modal handleShowClienteModal que é aberto ao ser clicado no botão */}
           <Button
             variant="secondary"
             className="mr-4 font-weight-bold"
-            onClick={handleShowClienteModal}
+            onClick={handleShowClienteModal} 
             ref={buttonAdd}
           >
             + | Adicionar Cliente
@@ -115,6 +116,7 @@ const Main = () => {
 
         <Button onClick={handleClick} variant="primary">
           Pesquisar
+          {/** esse botão "Pesquisar" que chama a função handleClick quando clicado. */}
         </Button>
 
         <Card style={{marginTop: 30}}>
@@ -129,7 +131,10 @@ const Main = () => {
           ))}
         </Row>
 
-        <FoodForm
+{/**o FoodForm, que é um modal para adicionar preparação. Ele recebe os estados foods e setFoods como propriedades. */}
+
+{/** HandleCloseFoodModal usado para fechar o modal */}
+        <FoodForm 
           show={showFoodModal}
           handleClose={handleCloseFoodModal}
           foods={foods}
